@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+</head>
+<body>
+    <script>
+
+        function playGame() {
+
+// declaring two variable to store scores
+        let userScore = 0;
+        let compScore = 0;
+
+            playRound(getComputerChoice(),getUserChoice());
+            playRound(getComputerChoice(),getUserChoice());
+            playRound(getComputerChoice(),getUserChoice());
+            playRound(getComputerChoice(),getUserChoice());
+            playRound(getComputerChoice(),getUserChoice());
+
+
+        // function to get computer coice (without arrays)
+        function getComputerChoice() {
+            // using math.random  to get random number bw 0 to 3
+            const rand = Math.floor(Math.random() *3);
+
+            let result;
+
+            switch (rand) {
+                case 0:
+                    result = "Rock";
+                    break;
+                case 1:
+                    result = "Paper";
+                    break;
+                case 2:
+                    result = "Scissors";
+                    break;
+            }
+        return result;
+        }
+
+        // function to get user coice using prompt
+        function getUserChoice() {
+            const result = prompt("Inputs: 1.Rock 2.Paper 3.Scissors")
+            // making the input case-insensitive by making first letter capital and rest lower case
+            return result.charAt(0).toUpperCase() + result.slice(1).toLowerCase();
+        }
+        // console.log(getUserChoice().length);
+
+        function playRound(computerCoice,Humanchoice) {
+            if (Humanchoice == '' || (Humanchoice != "Rock" && Humanchoice != "Paper" && Humanchoice != "Scissors")){
+                console.log("Invalid Input");
+                // if its a invalid case rerun the round
+                playRound(getComputerChoice(),getUserChoice());
+            }
+            else if (Humanchoice == computerCoice) {
+                console.log("It's a Draw! Both guessed " + Humanchoice);
+            }
+            else if ((Humanchoice == 'Rock' && computerCoice == 'Scissors') || (Humanchoice == 'Paper' && computerCoice == 'Rock') || (Humanchoice == 'Scissors' && computerCoice == 'Paper')) {
+                console.log("You Won! " + Humanchoice + " beats " + computerCoice);
+                userScore++;
+            }
+            else {
+                console.log("You Lost! " + computerCoice + " beats " + Humanchoice)
+                compScore++;
+            }
+        }
+        // printing scores
+        console.log("Your score: " + userScore + " computer's score: " + compScore);
+
+        // deciding the winner by comparing scores
+            if (userScore == compScore){
+                console.log("It's a Draw!!");
+            }
+            else if (userScore < compScore) {
+                console.log("You Lost!");
+            }
+            else {
+                console.log("You Won!!");
+            }
+        }
+
+        playGame();
+
+        // console.log(getUserChoice())
+
+    </script>
+</body>
+</html>
