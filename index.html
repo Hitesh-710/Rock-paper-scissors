@@ -4,88 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="container">
+        <span class="ques">Choose an Input.</span>
+        <button class="rock">Rock</button>
+        <button class="paper">Paper</button>
+        <button class="scissors">Scissors</button>
+        <div class="result"></div>
+    </div>
+
     <script>
 
-        function playGame() {
+        let maxWidth = 0;
 
-// declaring two variable to store scores
-        let userScore = 0;
-        let compScore = 0;
+        const buttons = document.querySelectorAll('button');
+        const box = document.querySelector('.container');
+        const result = document.querySelector('.result');
+        const ques = document.querySelector('.ques');
+        const body = document.querySelector('body');
+        
+        document.querySelectorAll('*').forEach(el => {
+            el.style.fontFamily = "Nunito"; // Example styling
+        });
 
-            playRound(getComputerChoice(),getUserChoice());
-            playRound(getComputerChoice(),getUserChoice());
-            playRound(getComputerChoice(),getUserChoice());
-            playRound(getComputerChoice(),getUserChoice());
-            playRound(getComputerChoice(),getUserChoice());
 
+        body.style.backgroundColor = '#202123'
 
-        // function to get computer coice (without arrays)
-        function getComputerChoice() {
-            // using math.random  to get random number bw 0 to 3
-            const rand = Math.floor(Math.random() *3);
+        box.style.display = 'flex';
+        box.style.flexDirection = 'column';
+        box.style.justifyContent = 'center';
+        box.style.height = '100vh';
+        box.style.alignItems = 'center';
 
-            let result;
+        ques.style.fontSize = '28px';
+        ques.style.color = ' #E0E0E0';
+
+        //finding maximum width button and applying to all
+        buttons.forEach(button =>{
+            maxWidth = Math.max(maxWidth, button.offsetWidth);
+        });
+        
+        buttons.forEach(button =>{
+            button.style.margin =  '10px';
+            button.style.width =  (maxWidth+45) + 'px'; //making width of all the buttons equal
+            button.style.padding =  '20px';
+            button.style.backgroundColor = 'gray';
+            button.style.border = 'none';
+            button.style.borderRadius = '8px';
+            button.style.fontSize = '18px';
+        });
+        
+        buttons.forEach(button => {
+                button.addEventListener('click' , () =>{
+                    let userChoice = button.textContent;
+                playRound(getComputerChoice(),userChoice);
+            })
+        });
+        
+        // function playGame() {
+            
+            // declaring two variable to store scores
+            let userScore = 0;
+            let compScore = 0;
+            
+            
+            // function to get computer coice (without arrays)
+            function getComputerChoice() {
+                // using math.random  to get random number bw 0 to 3
+                const rand = Math.floor(Math.random() *3);
+                
+                let result;
 
             switch (rand) {
                 case 0:
                     result = "Rock";
                     break;
-                case 1:
-                    result = "Paper";
-                    break;
-                case 2:
-                    result = "Scissors";
-                    break;
-            }
-        return result;
-        }
+                    case 1:
+                        result = "Paper";
+                        break;
+                        case 2:
+                            result = "Scissors";
+                            break;
+                        }
+                        return result;
+                    }
+                    
+                    
 
-        // function to get user coice using prompt
-        function getUserChoice() {
-            const result = prompt("Inputs: 1.Rock 2.Paper 3.Scissors")
-            // making the input case-insensitive by making first letter capital and rest lower case
-            return result.charAt(0).toUpperCase() + result.slice(1).toLowerCase();
-        }
-        // console.log(getUserChoice().length);
-
-        function playRound(computerCoice,Humanchoice) {
-            if (Humanchoice == '' || (Humanchoice != "Rock" && Humanchoice != "Paper" && Humanchoice != "Scissors")){
-                console.log("Invalid Input");
-                // if its a invalid case rerun the round
-                playRound(getComputerChoice(),getUserChoice());
+        function playRound(computerChoice,Humanchoice) {
+            result.innerHTML = "";
+            let roundResult = '';
+            if (Humanchoice == computerChoice) {
+               roundResult += `It's a Draw! Both guessed ${Humanchoice}`;
             }
-            else if (Humanchoice == computerCoice) {
-                console.log("It's a Draw! Both guessed " + Humanchoice);
-            }
-            else if ((Humanchoice == 'Rock' && computerCoice == 'Scissors') || (Humanchoice == 'Paper' && computerCoice == 'Rock') || (Humanchoice == 'Scissors' && computerCoice == 'Paper')) {
-                console.log("You Won! " + Humanchoice + " beats " + computerCoice);
+            else if ((Humanchoice == 'Rock' && computerChoice == 'Scissors') || (Humanchoice == 'Paper' && computerChoice == 'Rock') || (Humanchoice == 'Scissors' && computerChoice == 'Paper')) {
+                roundResult += `You Won! ${Humanchoice} beats ${computerChoice}`;
                 userScore++;
             }
             else {
-                console.log("You Lost! " + computerCoice + " beats " + Humanchoice)
+                roundResult += `You Lost! ${computerChoice} beats ${Humanchoice}`;
                 compScore++;
             }
+
+            result.innerHTML += `<p>${roundResult}</p>`;
+            result.innerHTML += `<p>Score: You ${userScore} - ${compScore} Computer</p>`;
+
+            if (userScore == 5 || compScore == 5) {
+                result.innerHTML = "";
+                if (userScore == compScore){
+                    result.innerHTML += `<p>It's a Draw!</p>`;
+                }
+                else if (userScore < compScore) {
+                    result.innerHTML += `<p>You Lost! Better luck next time.</p>`;
+                }
+                else {
+                    result.innerHTML += `<p>You Won!! Way to go!</p>`
+                }
+            userScore = 0;
+            compScore =0;
+            }
         }
-        // printing scores
-        console.log("Your score: " + userScore + " computer's score: " + compScore);
-
-        // deciding the winner by comparing scores
-            if (userScore == compScore){
-                console.log("It's a Draw!!");
-            }
-            else if (userScore < compScore) {
-                console.log("You Lost!");
-            }
-            else {
-                console.log("You Won!!");
-            }
-        }
-
-        playGame();
-
-        // console.log(getUserChoice())
 
     </script>
 </body>
