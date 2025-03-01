@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="container">
+        <div class="previousMatch"></div>
         <span class="ques">Choose an Input.</span>
         <button class="rock">Rock</button>
         <button class="paper">Paper</button>
@@ -24,10 +25,17 @@
         const result = document.querySelector('.result');
         const ques = document.querySelector('.ques');
         const body = document.querySelector('body');
+        const previousMatch = document.querySelector('.previousMatch');
         
         document.querySelectorAll('*').forEach(el => {
             el.style.fontFamily = "Nunito"; // Example styling
         });
+
+        previousMatch.textContent = "Previous Match: ";
+        previousMatch.style.color = 'white';
+        previousMatch.style.fontSize = '20px';
+        previousMatch.style.textAlign = 'center';
+
 
 
         body.style.backgroundColor = '#202123'
@@ -37,6 +45,10 @@
         box.style.justifyContent = 'center';
         box.style.height = '100vh';
         box.style.alignItems = 'center';
+
+        result.style.color = 'white';
+        result.style.fontSize = '20px';
+        result.style.textAlign = 'center';
 
         ques.style.fontSize = '28px';
         ques.style.color = ' #E0E0E0';
@@ -115,12 +127,15 @@
                 result.innerHTML = "";
                 if (userScore == compScore){
                     result.innerHTML += `<p>It's a Draw!</p>`;
+                    previousMatch.textContent = "Previous Match: Draw";
                 }
                 else if (userScore < compScore) {
                     result.innerHTML += `<p>You Lost! Better luck next time.</p>`;
+                    previousMatch.textContent = "Previous Match: You Lost";
                 }
                 else {
                     result.innerHTML += `<p>You Won!! Way to go!</p>`
+                    previousMatch.textContent = "Previous Match: You Won";
                 }
             userScore = 0;
             compScore =0;
